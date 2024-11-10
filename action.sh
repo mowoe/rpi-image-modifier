@@ -91,6 +91,12 @@ if grep -qF /boot/firmware "${TEMP_DIR}/mnt/etc/fstab"; then
 else
     BOOT_MOUNTPOINT=/boot
 fi
+
+# Check if fstab mountpoint for boot partition exists (not the case for ubuntu)
+if [ ! -d "${TEMP_DIR}/mnt/${BOOT_MOUNTPOINT}" ]; then
+    sudo mkdir -p "${TEMP_DIR}/mnt/${BOOT_MOUNTPOINT}"
+fi
+
 sudo mount -v "${LOOPBACK_DEV}p1" "${TEMP_DIR}/mnt/${BOOT_MOUNTPOINT}"
 
 if [ "$__ARG_MOUNT_REPOSITORY" ]; then
